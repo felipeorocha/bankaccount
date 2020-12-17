@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("account")
+@RequestMapping("accounts")
 class AccountController(val repository: AccountRepository) {
 
     @PostMapping
@@ -26,4 +26,7 @@ class AccountController(val repository: AccountRepository) {
         val updateSave = repository.save(accountDB.copy(name = account.name, balance = account.balance))
         return ResponseEntity.ok(updateSave)
     }
+
+    @DeleteMapping("{document}")
+    fun delete(@PathVariable document: String) = repository.findByDocument(document).ifPresent { deleteItem -> repository.delete(deleteItem) }
 }
